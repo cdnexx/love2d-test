@@ -6,10 +6,15 @@ function love.load()
     win_width = 1280
     win_height = 720
 
+    background_music = love.audio.newSource("assets/bg_loop.mp3", "stream")
+    background_music:setLooping(true)
+    background_music:setVolume(0.2)
+    background_music:play()
+
     weapons = {
         Weapon:new("AR", 0.1, 1000, {0, 1, 1}, 5),
         Weapon:new("Pistol", 0.5, 700, {0, 1, 0}, 4),
-        Weapon:new("SMG", 0.025, 1000, {1, 1, 0}, 0.5)
+        Weapon:new("SMG", 0.025, 1000, {1, 1, 0}, 1)
     }
 
     current_weapon = 1
