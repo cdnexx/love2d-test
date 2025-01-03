@@ -21,7 +21,7 @@ function love.load()
     shoot_timer = 0
 
     spawn_timer = 0
-    spawn_rate = 0.8
+    spawn_rate = 0.3
     enemies = {}
 
     math.randomseed(os.time())
@@ -36,7 +36,7 @@ function love.update(dt)
 
     spawn_timer = spawn_timer - dt
     if spawn_timer <= 0 then
-        local enemy_size = math.random(20, 100)
+        local enemy_size = math.random(30, 60)
         local enemy = Enemy:new(math.random(win_width-enemy_size), math.random(win_height-enemy_size), enemy_size, math.floor(math.random(1, 5)*(enemy_size/15)))
         table.insert(enemies, enemy)
         spawn_timer = spawn_rate
@@ -52,6 +52,10 @@ function love.update(dt)
             end
             shoot_timer = player.weapon.fire_rate
         end
+    end
+
+    for _, enemy in ipairs(enemies) do 
+        enemy:moveTowardsPlayer(player, dt)
     end
 
     for i = #bullets, 1, -1 do

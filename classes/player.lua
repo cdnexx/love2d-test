@@ -41,4 +41,8 @@ function Player:setWeapon(weapon)
     self.weapon = weapon
 end
 
+function Player:getPosition()
+    return self.x, self.y
+end
+
 return Player

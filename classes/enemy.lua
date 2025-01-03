@@ -8,6 +8,7 @@ function Enemy:new(x, y, size, health)
     obj.size = size
     obj.health = health
     obj.death_sound = "assets/break.mp3"
+    obj.speed = 100
     return obj
 end
 
@@ -36,6 +37,26 @@ function Enemy:checkCollision(bullet)
     end
 
     return false
+end
+
+function Enemy:moveTowardsPlayer(player, dt)
+    local player_x, player_y = player:getPosition()
+    local dx = player_x - self.x
+    local dy = player_y - self.y
+
+    local distance = math.sqrt(dx^2 + dy^2)
+
+    if distance > 0 then
+        local dirX, dirY = dx/distance, dy/distance
+        local step = self.speed * dt
+        if distance > step then 
+            self.x = self.x + dirX * step
+            self.y = self.y + dirY * step
+        else
+            self.x = player_x
+            self.y = player_y
+        end
+    end
 end
 
 return Enemy
