@@ -9,6 +9,7 @@ function Enemy:new(x, y, size, health)
     obj.health = health
     obj.death_sound = "assets/break.mp3"
     obj.speed = 100
+    obj.onDeathScore = 1
     return obj
 end
 
@@ -26,12 +27,13 @@ function Enemy:draw()
     end
 end
 
-function Enemy:checkCollision(bullet)
+function Enemy:checkCollision(bullet, game)
     if self.health > 0 and bullet.x > self.x and bullet.x < self.x + self.size and bullet.y > self.y and bullet.y <
         self.y + self.size then
         self.health = self.health - bullet.damage
         if self.health <= 0 then
             self:playSound()
+            game:changeScore(self.onDeathScore)
         end
         return true
     end

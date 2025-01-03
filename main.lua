@@ -1,3 +1,4 @@
+Game = require("classes/game")
 Player = require("classes/player")
 Enemy = require("classes/enemy")
 Weapon = require("classes/weapon")
@@ -6,9 +7,15 @@ function love.load()
     win_width = 1280
     win_height = 720
 
+    font = love.graphics.newFont(16)
+    love.graphics.setFont(font)
+
+    -- For testing
+    love.audio.setVolume(0.05)
+
     background_music = love.audio.newSource("assets/bg_loop.mp3", "stream")
     background_music:setLooping(true)
-    background_music:setVolume(0.2)
+    background_music:setVolume(0.05)
     background_music:play()
 
     weapons = {
@@ -20,6 +27,8 @@ function love.load()
     current_weapon = 1
 
     player = Player:new(400, 400, 20, 500, weapons[1])
+    game = Game:new(0)
+    score_display = ""
 
     shooting = false
     bullets = {}
@@ -36,6 +45,7 @@ function love.load()
 end
 
 function love.update(dt)
+    score_display = "Score: " .. game:getScore()
 
     player:move(dt, win_width, win_height)
 
@@ -70,7 +80,7 @@ function love.update(dt)
 
         -- Verify collitions
         for _, enemy in ipairs(enemies) do
-            if enemy:checkCollision(bullet) then
+            if enemy:checkCollision(bullet, game) then
                 table.remove(bullets, i)
             end
         end
@@ -121,5 +131,6 @@ function love.draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.print("Weapon: " .. weapons[current_weapon].name, 10, 10)
+    love.graphics.print(score_display, win_width - (font:getWidth(score_display)) - 10, 10)
     
 end
