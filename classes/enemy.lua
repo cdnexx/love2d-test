@@ -10,7 +10,38 @@ function Enemy:new(x, y, size, health)
     obj.death_sound = "assets/break.mp3"
     obj.speed = 100
     obj.onDeathScore = 1
+    obj.shape = "rectangle"
+    obj.tickTimer = 0
+    obj.tickRate = 1
     return obj
+end
+
+function Enemy:getShape()
+    return self.shape
+end
+
+function Enemy:getSize()
+    return self.size
+end
+
+function Enemy:getPosition()
+    return self.x, self.y
+end
+
+function Enemy:getTickRate()
+    return self.tickRate
+end
+
+function Enemy:getTickTimer()
+    return self.tickTimer
+end
+
+function Enemy:setTickRate(tickRate)
+    self.tickRate = tickRate
+end
+
+function Enemy:setTickTimer(time)
+    self.tickTimer = time
 end
 
 function Enemy:playSound()

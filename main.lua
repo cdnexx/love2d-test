@@ -19,6 +19,7 @@ function love.load()
     background_music:play()
 
     weapons = {
+        -- Weapon(NAME, FIRE_RATE, BULLET_SPEED, BULLET_COLOR, DAMAGE)
         Weapon:new("AR", 0.1, 1000, {0, 1, 1}, 5),
         Weapon:new("Pistol", 0.5, 700, {0, 1, 0}, 4),
         Weapon:new("SMG", 0.025, 1000, {1, 1, 0}, 1)
@@ -26,7 +27,7 @@ function love.load()
 
     current_weapon = 1
 
-    player = Player:new(400, 400, 20, 500, weapons[1])
+    player = Player:new(400, 400, 20, 500, weapons[1], 100)
     game = Game:new(0)
     score_display = ""
 
@@ -35,7 +36,7 @@ function love.load()
     shoot_timer = 0
 
     spawn_timer = 0
-    spawn_rate = 0.3
+    spawn_rate = 20
     enemies = {}
 
     math.randomseed(os.time())
@@ -71,6 +72,7 @@ function love.update(dt)
 
     for _, enemy in ipairs(enemies) do 
         enemy:moveTowardsPlayer(player, dt)
+        player:checkCollision(enemy)
     end
 
     for i = #bullets, 1, -1 do
@@ -117,6 +119,8 @@ end
 function love.draw()
     
     player:draw()
+
+
 
     -- Draw bullets
     for b, bullet in ipairs(bullets) do
